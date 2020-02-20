@@ -28,7 +28,7 @@ public class JSONStringParser {
         var firstName = rootObject.getAsJsonPrimitive("name").getAsString();
         var lastName = rootObject.getAsJsonPrimitive("last").getAsString();
         var year = rootObject.getAsJsonPrimitive("dob").getAsInt();
-        return new Person(firstName, lastName, year);
+        return new Person(pageTitle, pageRedirect, year);
 
     }
 
