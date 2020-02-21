@@ -6,11 +6,20 @@ public class Webpage {
 
     private String pageTitle;
     private String redirect;
+    private Map<String, String> editList;
+
 
     public Webpage(String aTitle, String aRedirect, Map aMap){
         this.pageTitle = aTitle;
         this.redirect = aRedirect;
-        Map<String, String> editList = aMap;
+        this.editList = aMap;
+    }
+
+    public void printThePage(){
+        System.out.println("*********");
+        System.out.println("Title: " + pageTitle);
+        System.out.println("Redirects: " + redirect);
+        System.out.println("Edit HashMap: " + editList);
     }
 
 

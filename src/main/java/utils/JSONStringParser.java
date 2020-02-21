@@ -7,6 +7,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.util.Map;
+
 public class JSONStringParser {
 
     public static Webpage ParseMostRecent(String JSONString) throws ParameterIsNotJSONStringException {
@@ -14,9 +16,9 @@ public class JSONStringParser {
         JsonParser jsonParser = new JsonParser();
         JsonElement rootElement = jsonParser.parse(JSONString);
         JsonObject rootObject = rootElement.getAsJsonObject();
-        var firstName = rootObject.getAsJsonPrimitive("title").getAsString();
-        var lastName = rootObject.getAsJsonPrimitive("redirects").getAsString();
-        var year = rootObject.getAsJsonPrimitive("dob").getAsInt();
+        String pageTitle = rootObject.getAsJsonPrimitive("title").getAsString();
+        String pageRedirect = rootObject.getAsJsonPrimitive("redirects").getAsString();
+        Map<String, String> listOfEditors = null; //= rootObject.getAsJsonPrimitive("dob").getAsInt();
         return new Webpage(pageTitle, pageRedirect, listOfEditors);
     }
 
@@ -25,10 +27,10 @@ public class JSONStringParser {
         JsonParser jsonParser = new JsonParser();
         JsonElement rootElement = jsonParser.parse(JSONString);
         JsonObject rootObject = rootElement.getAsJsonObject();
-        var firstName = rootObject.getAsJsonPrimitive("name").getAsString();
-        var lastName = rootObject.getAsJsonPrimitive("last").getAsString();
-        var year = rootObject.getAsJsonPrimitive("dob").getAsInt();
-        return new Person(pageTitle, pageRedirect, year);
+        var pageTitle = rootObject.getAsJsonPrimitive("name").getAsString();
+        var pageRedirect = rootObject.getAsJsonPrimitive("last").getAsString();
+        Map<String, String> listOfEditors = null; //rootObject.getAsJsonPrimitive("dob").getAsInt();
+        return new Webpage(pageTitle, pageRedirect, listOfEditors);
 
     }
 

@@ -1,3 +1,4 @@
+import exceptions.ParameterIsNotJSONStringException;
 import utils.*;
 import domain.*;
 import java.io.*;
@@ -14,11 +15,11 @@ public class Main {
                     break;
                 }
                 String json = new JSONStringRetriever(input).getJSONstring();
-                Webpage wb1 = JSONStringParser(json).;
-                wb1.print();
+                Webpage wb1 = JSONStringParser.ParseMostRecent(json);
+                wb1.printThePage();
             }
-        } catch (IOException e) {
-            System.out.println("IO Exception");
+        } catch (IOException | ParameterIsNotJSONStringException e) {
+            System.out.println("Exception");
         }
     }
 
