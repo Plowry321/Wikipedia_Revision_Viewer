@@ -1,12 +1,18 @@
 package domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.*;
 
 public class Webpage {
+    @SerializedName(value = "title")
+    String pageTitle;
 
-    private String pageTitle;
-    private String redirect;
-    private Map<String, String> editList;
+    @SerializedName(value = "Redirects")
+    String redirect;
+
+    @SerializedName(value = "user")
+    Map<String, String> editList;
 
 
     public Webpage(String aTitle, String aRedirect, Map aMap){
@@ -22,5 +28,15 @@ public class Webpage {
         System.out.println("Edit HashMap: " + editList);
     }
 
+    public String getPageTitle() {
+        return pageTitle;
+    }
 
+    public String getRedirect() {
+        return redirect;
+    }
+
+    public Map<String, String> getEditList() {
+        return editList;
+    }
 }

@@ -12,14 +12,11 @@ import java.util.Map;
 public class JSONStringParser {
 
     public static Webpage ParseMostRecent(String JSONString) throws ParameterIsNotJSONStringException {
-
-        JsonParser jsonParser = new JsonParser();
-        JsonElement rootElement = jsonParser.parse(JSONString);
-        JsonObject rootObject = rootElement.getAsJsonObject();
-        String pageTitle = rootObject.getAsJsonPrimitive("title").getAsString();
-        String pageRedirect = rootObject.getAsJsonPrimitive("redirects").getAsString();
-        Map<String, String> listOfEditors = null; //= rootObject.getAsJsonPrimitive("dob").getAsInt();
-        return new Webpage(pageTitle, pageRedirect, listOfEditors);
+        if (JSONString.charAt(0) != '{') {
+            throw new ParameterIsNotJSONStringException();
+        }
+        Gson gson = new Gson();
+        return gson.fromJson(JSONString, Webpage.class);
     }
 
     public static Webpage ParseMostRevisions(String JSONString) throws ParameterIsNotJSONStringException {
