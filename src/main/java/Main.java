@@ -18,7 +18,7 @@ public class Main {
                 Webpage wb1 = JSONStringParser.ParseMostRecent(json);
                 wb1.printThePage();
             }
-        } catch (IOException | ParameterIsNotJSONStringException e) {
+        } catch (IOException e) {
             System.out.println("Exception");
         }
     }

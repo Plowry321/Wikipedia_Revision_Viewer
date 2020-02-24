@@ -17,7 +17,10 @@ public class JSONStringRetriever {
                 "Revision Tracker/0.1 (http://www.cs.bsu.edu/; yourusername@bsu.edu)");
         InputStream in = connection.getInputStream();
         Scanner scanner = new Scanner(in);
-        String result = scanner.next();
+        String result = scanner.nextLine();
+        if (result.contains("redirects")) {
+            System.out.print("Redirected\n");
+        }
         return result;
     }
 }
