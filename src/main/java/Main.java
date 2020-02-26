@@ -7,20 +7,22 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-            while (true) {
-                System.out.println("Enter a word (type 'quit' to exit):");
-                String input = br.readLine();
-                if (input.equals("quit")) {
-                    break;
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+                while (true) {
+                    System.out.println("Enter a word (type 'quit' to exit):");
+                    String input = br.readLine();
+                    if (input.equals("quit")) {
+                        break;
+                    }
+                    String json = new JSONStringRetriever(input).getJSONstring();
+                    Webpage wb1 = JSONStringParser.ParseJSONString(json);
+                    printOutTheStuff(wb1);
                 }
-                String json = new JSONStringRetriever(input).getJSONstring();
-                Webpage wb1 = JSONStringParser.ParseJSONString(json);
-                printOutTheStuff(wb1);
+            } catch (IOException | ParameterIsNotJSONStringException e) {
+                System.out.println("Exception");
+            } catch (NullPointerException e) {
+                System.out.println("No Article Exists");
             }
-        } catch (IOException | ParameterIsNotJSONStringException e) {
-            System.out.println("Exception");
-        }
     }
 
     private static void printOutTheStuff(Webpage wb1) {

@@ -1,4 +1,5 @@
 package utils;
+
 import java.util.*;
 import java.io.*;
 import java.net.*;
@@ -10,7 +11,8 @@ public class JSONStringRetriever {
         this.input = input;
     }
 
-    public String getJSONstring () throws IOException {
+    public String getJSONstring() throws IOException {
+        input = input.replaceAll(" ","%20");
         URL url = new URL("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&titles=" + input + "&rvprop=timestamp|user&rvlimit=30&redirects");
         URLConnection connection = url.openConnection();
         connection.setRequestProperty("User-Agent",
@@ -18,9 +20,6 @@ public class JSONStringRetriever {
         InputStream in = connection.getInputStream();
         Scanner scanner = new Scanner(in);
         String result = scanner.nextLine();
-        if (result.contains("redirects")) {
-            System.out.print("Redirected\n");
-        }
         return result;
     }
 }
