@@ -25,14 +25,17 @@ public class JSONStringParser {
         JsonParser jsonParser = new JsonParser();
         JsonElement rootElement = jsonParser.parse(JSONString);
         JsonObject rootObject = rootElement.getAsJsonObject();
+
         if (youWereRedirected(rootObject)){
             redirectedFrom = rootObject.getAsJsonObject("query").getAsJsonArray("redirects").get(0).getAsJsonObject().getAsJsonPrimitive("from").getAsString();
         }
+
         JsonObject pages = rootObject.getAsJsonObject("query").getAsJsonObject("pages");
         for (Map.Entry<String, JsonElement> entry : pages.entrySet()) {
             JsonObject entryObject = entry.getValue().getAsJsonObject();
             title = entryObject.getAsJsonPrimitive("title").getAsString();
             array = entryObject.getAsJsonArray("revisions");
+
             for (int i = 0; i < array.size(); i++) {
                 JsonObject individualRevisionObject = array.get(i).getAsJsonObject();
                 name = individualRevisionObject.getAsJsonPrimitive("user").getAsString();

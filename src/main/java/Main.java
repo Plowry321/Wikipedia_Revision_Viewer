@@ -32,11 +32,10 @@ public class Main {
             System.out.println(name + "made an edit at: " + time);
         }
 
-        for (Map.Entry<String, Integer> entry : wb1.namesAndEdits.entrySet()) {
-            String name = entry.getKey();
-            int edits = entry.getValue();
+        for (int j = 0; j < wb1.edits.length; j++) {
+            String name = wb1.userArray[j].toString();
+            int edits = wb1.edits[j];
             System.out.println(name + " made " + edits + " edits");
+            }
         }
-    }
-
 }

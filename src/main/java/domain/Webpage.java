@@ -1,24 +1,28 @@
 package domain;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 public class Webpage {
 
     public String title;
     public Map<String,String> timesAndNames;
-    public Map<String,Integer> namesAndEdits;
+    public int[] edits;
     public Boolean redirected;
+    public Object[] userArray;
     public String redirectedFrom;
 
-    public Webpage(String aTitle, Map aTimesAndNamesMap, String aRedirectedFrom, Map aNamesAndEditsMap)
+    public Webpage(String aTitle, Map aTimesAndNamesMap, String aRedirectedFrom, Set aUserSet, int[] anEditsArray)
     {
         this.title = aTitle;
         this.timesAndNames = aTimesAndNamesMap;
         this.redirected = !aRedirectedFrom.isEmpty();
         this.redirectedFrom = aRedirectedFrom;
-        this.namesAndEdits = aNamesAndEditsMap;
+        this.userArray = aUserSet.toArray();
+        this.edits = anEditsArray;
     }
 
     public String getTitle() {

@@ -2,17 +2,16 @@ package utils;
 
 import domain.Webpage;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 public class WebpageBuilder {
 
     public String title;
     public Map<String,String> timesAndNames;
     public String redirected;
-
-    public Map<String,Integer> namesAndEdits;
+    private ArrayList<String> users;
+    private Set<String> uniqueUserSet;
+    private int[] edits;
 
 
     public WebpageBuilder(String aTitle, Map aTNNMap, String aRedirected)
@@ -23,52 +22,34 @@ public class WebpageBuilder {
     }
 
     public Webpage buildAWebpage(){
-        namesAndEdits = makeEditSumList(timesAndNames);
-        Webpage webpage = new Webpage(title, timesAndNames, redirected, namesAndEdits);
+        Set<String> uSet = makeUniqueSet(timesAndNames);
+        edits = getEditValuesFromNames(uSet);
+        Webpage webpage = new Webpage(title, timesAndNames, redirected, uniqueUserSet, edits);
         return webpage;
     }
 
-    private Map<String, Integer> makeEditSumList(Map aTimesAndNamesMap) {
-        ArrayList<String> users = new ArrayList<>();
-        Map<String, Integer> nameEdit = null;
+    private Set<String> makeUniqueSet(Map aTimesAndNamesMap) {
+        users = new ArrayList<>();
         for (Object entry : aTimesAndNamesMap.values()) {
             users.add(entry.toString());
         }
         users.sort(null);
-        String oldName = "";
-
-        for (String name : users){
-            if (!name.contentEquals(oldName)){
-                int numberOfEdits = modeOfName(users, name);
-                nameEdit.put(name, numberOfEdits);
-            }
-            oldName = name;
-        }
-        return nameEdit;
+        uniqueUserSet = new HashSet<>(users);
+        return uniqueUserSet;
     }
 
-    public static int modeOfName(ArrayList users, String userName) {
-        String[] editors = makeArrayFromArrayList(users);
-        String editorsName = userName;
-        int count = 0;
-        for (int j = 0; j < editors.length; ++j)
-            {
-                if (editorsName.contains(editors[j])) {
-                    count++;
+    private int[] getEditValuesFromNames(Set<String> uniqueUserSet){
+        Object[] uniqueUserArray = uniqueUserSet.toArray();
+        int[] values = new int[uniqueUserArray.length];
+        for (int i = 0; i < uniqueUserArray.length; i++){
+            int editsMade = 0;
+            for (int k = 0; k < users.size(); k++){
+                if (users.get(k).contains(uniqueUserArray[i].toString())){
+                    editsMade++;
                 }
             }
-        return count;
-    }
-
-
-    public static String[] makeArrayFromArrayList(ArrayList anArrayList){
-        int h = 0;
-        String[] array = new String[anArrayList.size()];
-        for (Object name : anArrayList){
-            String actualName = name.toString();
-            array[h] = actualName;
-            h++;
+            values[i] = editsMade;
         }
-        return array;
+        return values;
     }
 }
