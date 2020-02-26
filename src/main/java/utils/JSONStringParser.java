@@ -1,34 +1,55 @@
 package utils;
 
+import com.google.gson.*;
 import domain.Webpage;
 import exceptions.ParameterIsNotJSONStringException;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
+import java.nio.channels.ScatteringByteChannel;
+import java.util.HashMap;
 import java.util.Map;
+
 
 public class JSONStringParser {
 
-    public static Webpage ParseMostRecent(String JSONString) throws ParameterIsNotJSONStringException {
+    public static Webpage ParseJSONString(String JSONString) throws ParameterIsNotJSONStringException {
         if (JSONString.charAt(0) != '{') {
             throw new ParameterIsNotJSONStringException();
         }
-        Gson gson = new Gson();
-        return gson.fromJson(JSONString, Webpage.class);
-    }
-
-    public static Webpage ParseMostRevisions(String JSONString) throws ParameterIsNotJSONStringException {
-
+        HashMap<String, String> timestampNameMap = new HashMap<>();
+        JsonArray array;
+        Webpage webpage = null;
+        String name;
+        String time;
+        String title;
+        String redirectedFrom = "";
         JsonParser jsonParser = new JsonParser();
         JsonElement rootElement = jsonParser.parse(JSONString);
         JsonObject rootObject = rootElement.getAsJsonObject();
-        var pageTitle = rootObject.getAsJsonPrimitive("name").getAsString();
-        var pageRedirect = rootObject.getAsJsonPrimitive("last").getAsString();
-        Map<String, String> listOfEditors = null; //rootObject.getAsJsonPrimitive("dob").getAsInt();
-        return new Webpage(pageTitle, pageRedirect, listOfEditors);
-
+        if (youWereRedirected(rootObject)){
+            redirectedFrom = rootObject.getAsJsonObject("query").getAsJsonArray("redirects").get(0).getAsJsonObject().getAsJsonPrimitive("from").getAsString();
+        }
+        JsonObject pages = rootObject.getAsJsonObject("query").getAsJsonObject("pages");
+        for (Map.Entry<String, JsonElement> entry : pages.entrySet()) {
+            JsonObject entryObject = entry.getValue().getAsJsonObject();
+            title = entryObject.getAsJsonPrimitive("title").getAsString();
+            array = entryObject.getAsJsonArray("revisions");
+            for (int i = 0; i < array.size(); i++) {
+                JsonObject individualRevisionObject = array.get(i).getAsJsonObject();
+                name = individualRevisionObject.getAsJsonPrimitive("user").getAsString();
+                time = individualRevisionObject.getAsJsonPrimitive("timestamp").getAsString();
+                timestampNameMap.put(time, name);
+            }
+            webpage = new Webpage(title, timestampNameMap, !redirectedFrom.isEmpty(), redirectedFrom);
+        }
+        return webpage;
     }
 
+    private static boolean youWereRedirected(JsonObject rootObject){
+        try {
+            rootObject.getAsJsonObject("query").getAsJsonArray("redirects").get(0);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

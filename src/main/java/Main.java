@@ -15,11 +15,19 @@ public class Main {
                     break;
                 }
                 String json = new JSONStringRetriever(input).getJSONstring();
-                Webpage wb1 = JSONStringParser.ParseMostRecent(json);
-                wb1.printThePage();
+                Webpage wb1 = JSONStringParser.ParseJSONString(json);
+                printOutTheStuff(wb1);
             }
-        } catch (IOException e) {
+        } catch (IOException | ParameterIsNotJSONStringException e) {
             System.out.println("Exception");
+        }
+    }
+
+    private static void printOutTheStuff(Webpage wb1) {
+        for (Map.Entry<String, String> entry : wb1.timesAndNames.entrySet()) {
+            String time = entry.getKey();
+            String name = entry.getValue();
+            System.out.println(name + "made an edit at: " + time);
         }
     }
 
