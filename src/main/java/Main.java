@@ -29,6 +29,12 @@ public class Main {
             String name = entry.getValue();
             System.out.println(name + "made an edit at: " + time);
         }
+
+        for (Map.Entry<String, Integer> entry : wb1.namesAndEdits.entrySet()) {
+            String name = entry.getKey();
+            int edits = entry.getValue();
+            System.out.println(name + " made " + edits + " edits");
+        }
     }
 
 }

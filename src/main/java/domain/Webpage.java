@@ -1,22 +1,24 @@
 package domain;
 
-import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Webpage {
 
     public String title;
     public Map<String,String> timesAndNames;
+    public Map<String,Integer> namesAndEdits;
     public Boolean redirected;
     public String redirectedFrom;
 
-    public Webpage(String aTitle, Map aTimesAndNamesMap, Boolean aRedirect, String aRedirectedFrom)
+    public Webpage(String aTitle, Map aTimesAndNamesMap, String aRedirectedFrom, Map aNamesAndEditsMap)
     {
         this.title = aTitle;
         this.timesAndNames = aTimesAndNamesMap;
-        this.redirected = aRedirect;
+        this.redirected = !aRedirectedFrom.isEmpty();
         this.redirectedFrom = aRedirectedFrom;
+        this.namesAndEdits = aNamesAndEditsMap;
     }
 
     public String getTitle() {
@@ -26,4 +28,5 @@ public class Webpage {
     public Boolean wasRedirected() {
         return redirected;
     }
+
 }

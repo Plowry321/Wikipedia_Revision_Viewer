@@ -39,7 +39,8 @@ public class JSONStringParser {
                 time = individualRevisionObject.getAsJsonPrimitive("timestamp").getAsString();
                 timestampNameMap.put(time, name);
             }
-            webpage = new Webpage(title, timestampNameMap, !redirectedFrom.isEmpty(), redirectedFrom);
+            WebpageBuilder builder = new WebpageBuilder(title,timestampNameMap,redirectedFrom);
+            webpage = builder.buildAWebpage();
         }
         return webpage;
     }
