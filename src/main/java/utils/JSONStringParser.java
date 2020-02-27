@@ -4,7 +4,6 @@ import com.google.gson.*;
 import domain.Webpage;
 import exceptions.ParameterIsNotJSONStringException;
 
-import java.nio.channels.ScatteringByteChannel;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +39,8 @@ public class JSONStringParser {
                 JsonObject individualRevisionObject = array.get(i).getAsJsonObject();
                 name = individualRevisionObject.getAsJsonPrimitive("user").getAsString();
                 time = individualRevisionObject.getAsJsonPrimitive("timestamp").getAsString();
-                timestampNameMap.put(time, name);
+                String newTime = makePrettyTimestamp(time);
+                timestampNameMap.put(newTime, name);
             }
             WebpageBuilder builder = new WebpageBuilder(title,timestampNameMap,redirectedFrom);
             webpage = builder.buildAWebpage();
@@ -55,5 +55,11 @@ public class JSONStringParser {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private static String makePrettyTimestamp(String aTimeStampString) {
+        String date = aTimeStampString.substring(0,aTimeStampString.indexOf('T'));
+        String time = aTimeStampString.substring(aTimeStampString.indexOf('T')+1,aTimeStampString.indexOf('Z'));
+        return date + " " + time;
     }
 }

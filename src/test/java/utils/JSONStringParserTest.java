@@ -20,11 +20,17 @@ class JSONStringParserTest {
 
     @org.junit.jupiter.api.Test
     void parsesRedirection() throws ParameterIsNotJSONStringException {
-        Webpage resultingWebpageTwo = JSONStringParser.ParseJSONString(sampleStringThree);
+        Webpage resultingWebpageTwo = JSONStringParser.ParseJSONString(sampleStringTwo);
         Webpage resultingWebpage = JSONStringParser.ParseJSONString(sampleString);
 
         assertEquals(true, resultingWebpageTwo.wasRedirected());
         assertEquals(false, resultingWebpage.wasRedirected());
+    }
+
+    @org.junit.jupiter.api.Test
+    void hasCorrectTimestamps() throws ParameterIsNotJSONStringException {
+        Webpage resultingWebpage = JSONStringParser.ParseJSONString(sampleStringThree);
+        assertEquals("2020-02-24 09:26:29", resultingWebpage.getFirstTimestamp());
     }
 
 }

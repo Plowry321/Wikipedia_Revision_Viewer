@@ -33,4 +33,7 @@ public class Webpage {
         return redirected;
     }
 
+    public String getFirstTimestamp(){
+        return timesAndNames.keySet().toArray()[0].toString();
+    }
 }
