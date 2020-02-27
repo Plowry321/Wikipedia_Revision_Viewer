@@ -1,6 +1,7 @@
 package utils;
 
 import com.google.gson.*;
+import domain.TimeStamp;
 import domain.Webpage;
 import exceptions.ParameterIsNotJSONStringException;
 
@@ -14,7 +15,7 @@ public class JSONStringParser {
         if (JSONString.charAt(0) != '{') {
             throw new ParameterIsNotJSONStringException();
         }
-        HashMap<String, String> timestampNameMap = new HashMap<>();
+        HashMap<TimeStamp, String> timestampNameMap = new HashMap<>();
         JsonArray array;
         Webpage webpage = null;
         String name;
@@ -39,8 +40,8 @@ public class JSONStringParser {
                 JsonObject individualRevisionObject = array.get(i).getAsJsonObject();
                 name = individualRevisionObject.getAsJsonPrimitive("user").getAsString();
                 time = individualRevisionObject.getAsJsonPrimitive("timestamp").getAsString();
-                String newTime = makePrettyTimestamp(time);
-                timestampNameMap.put(newTime, name);
+                TimeStamp newTimeStamp = breakDownTimeStamp(makePrettyTimestamp(time));
+                timestampNameMap.put(newTimeStamp, name);
             }
             WebpageBuilder builder = new WebpageBuilder(title,timestampNameMap,redirectedFrom);
             webpage = builder.buildAWebpage();
@@ -60,6 +61,17 @@ public class JSONStringParser {
     private static String makePrettyTimestamp(String aTimeStampString) {
         String date = aTimeStampString.substring(0,aTimeStampString.indexOf('T'));
         String time = aTimeStampString.substring(aTimeStampString.indexOf('T')+1,aTimeStampString.indexOf('Z'));
-        return date + " " + time;
+        return date + time;
+    }
+
+    private static TimeStamp breakDownTimeStamp(String aTimeString) {
+        String year = aTimeString.substring(0,4);
+        String month = aTimeString.substring(5,7);
+        String day = aTimeString.substring(8,10);
+        String hour = aTimeString.substring(10,12);
+        String minute = aTimeString.substring(13,15);
+        String second = aTimeString.substring(16,18);
+        TimeStamp newTimeStamp = new TimeStamp(year, month, day, hour, minute, second);
+        return newTimeStamp;
     }
 }
