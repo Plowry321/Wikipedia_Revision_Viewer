@@ -3,6 +3,7 @@ package utils;
 import domain.TimeStamp;
 import domain.Webpage;
 
+import java.sql.Array;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
@@ -13,8 +14,13 @@ public class WebpageBuilder {
     public Map<TimeStamp,String> timesAndNames;
     public String redirected;
     private ArrayList<String> users;
-    private Set<String> uniqueUserSet;
-    private int[] edits;
+
+    private Object[] userArray;
+    private Object[] timeStampArray;
+    private int[] editsArray;
+    private Object[] timeUserArray;
+
+    private Set<String> uSet;
 
 
     public WebpageBuilder(String aTitle, Map aTNNMap, String aRedirected)
@@ -22,14 +28,19 @@ public class WebpageBuilder {
         this.title = aTitle;
         this.timesAndNames = aTNNMap;
         this.redirected = aRedirected;
+        this.uSet = makeUniqueSetFromMap(timesAndNames);
+        this.userArray = uSet.toArray();
+        this.timeUserArray = timesAndNames.values().toArray();
+        this.timeStampArray = timesAndNames.keySet().toArray();
+
     }
 
     public Webpage buildAWebpage(){
-        Set<String> uSet = makeUniqueSetFromMap(timesAndNames);
-        edits = getEditValuesFromNames(uSet);
-        Map<TimeStamp, String> orderedTimesAndNames = reOrderTheMap(timesAndNames);
+        int[] editValues = getEditValuesFromNames(uSet);
+        editsArray = orderByEdits(editValues);
+        String[] timeUserArr = orderByTimeStamp(timeStampArray);
 
-        Webpage webpage = new Webpage(title, timesAndNames, redirected, uniqueUserSet, edits);
+        Webpage webpage = new Webpage(title, redirected, userArray, editsArray, timeStampArray, timeUserArr);
         return webpage;
     }
 
@@ -39,7 +50,7 @@ public class WebpageBuilder {
             users.add(entry.toString());
         }
         users.sort(null);
-        uniqueUserSet = new HashSet<>(users);
+        Set<String> uniqueUserSet = new HashSet<>(users);
         return uniqueUserSet;
     }
 
@@ -58,21 +69,45 @@ public class WebpageBuilder {
         return values;
     }
 
-    private Map<TimeStamp, String> reOrderTheMap(Map<TimeStamp, String> timesAndNames) {
-        Map<TimeStamp, String> orderedMap = null;
-        for (Map.Entry<TimeStamp, String> entry : timesAndNames.entrySet()) {
-            TimeStamp mostRecentTime = entry.getKey();
-            String mostRecentName = entry.getValue();
-            for (Map.Entry<TimeStamp, String> otherEntry : timesAndNames.entrySet()) {
-                TimeStamp time = otherEntry.getKey();
-                String name = otherEntry.getValue();
-                if(mostRecentTime.getSum() < time.getSum()){
-                    mostRecentTime = time;
-                    mostRecentName = name;
-                    }
+    private String[] orderByTimeStamp(Object[] aTimeStampArray) {
+        String[] stringArray = new String[aTimeStampArray.length];
+        for (int i = 0; i < aTimeStampArray.length; i++){
+            TimeStamp maxTime = (TimeStamp) aTimeStampArray[i];
+            TimeStamp tempTime;
+
+            for (int k = 0; k < aTimeStampArray.length; k++){
+                TimeStamp secondTime = (TimeStamp) aTimeStampArray[k];
+
+                if (maxTime.getSum() < secondTime.getSum() ){
+                    tempTime = (TimeStamp) aTimeStampArray[i];
+                    aTimeStampArray[i] = aTimeStampArray[k];
+                    aTimeStampArray[k] = tempTime;
+
+                    stringArray[i] = timeUserArray[k].toString();
                 }
-            orderedMap.put(mostRecentTime, mostRecentName);
             }
-        return orderedMap;
+        }
+        return stringArray;
+    }
+
+    private int[] orderByEdits(int[] editValueArray){
+        for (int i = 0; i < editValueArray.length; i++){
+            int maxValue = editValueArray[i];
+            int tempValue;
+            Object tempUser;
+
+            for (int k = 0; k < editValueArray.length; k++){
+                if (maxValue < editValueArray[k]){
+                    tempValue = editValueArray[i];
+                    editValueArray[i] = editValueArray[k];
+                    editValueArray[k] = tempValue;
+
+                    tempUser = userArray[i];
+                    userArray[i] = userArray[k];
+                    userArray[k] = tempUser;
+                }
+            }
+        }
+        return editValueArray;
     }
 }

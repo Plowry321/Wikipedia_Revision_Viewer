@@ -9,20 +9,26 @@ import java.util.Set;
 public class Webpage {
 
     public String title;
-    public Map<String,String> timesAndNames;
-    public int[] edits;
-    public Boolean redirected;
-    public Object[] userArray;
     public String redirectedFrom;
+    public Boolean redirected;
 
-    public Webpage(String aTitle, Map aTimesAndNamesMap, String aRedirectedFrom, Set aUserSet, int[] anEditsArray)
+    public int[] editValueArray;
+    public Object[] userArray;
+    public Object[] timeStampArray;
+    public String[] timeUserArray;
+
+
+    public Webpage(String aTitle, String aRedirectedFrom, Object[] aUserArray, int[] anEditsArray, Object[] aTimeStampArray, String[] aTimeUserArray)
     {
         this.title = aTitle;
-        this.timesAndNames = aTimesAndNamesMap;
-        this.redirected = !aRedirectedFrom.isEmpty();
         this.redirectedFrom = aRedirectedFrom;
-        this.userArray = aUserSet.toArray();
-        this.edits = anEditsArray;
+        this.redirected = !aRedirectedFrom.isEmpty();
+
+        this.userArray = aUserArray;
+        this.editValueArray = anEditsArray;
+
+        this.timeStampArray = aTimeStampArray;
+        this.timeUserArray = aTimeUserArray;
     }
 
     public String getTitle() {
@@ -34,6 +40,6 @@ public class Webpage {
     }
 
     public String getFirstTimestamp(){
-        return timesAndNames.keySet().toArray()[0].toString();
+        return timeStampArray[0].toString();
     }
 }
