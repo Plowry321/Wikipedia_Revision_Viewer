@@ -26,7 +26,7 @@ public class JSONStringParser {
         JsonElement rootElement = jsonParser.parse(JSONString);
         JsonObject rootObject = rootElement.getAsJsonObject();
 
-        if (youWereRedirected(rootObject)){
+        if (youWereRedirected(rootObject)) {
             redirectedFrom = rootObject.getAsJsonObject("query").getAsJsonArray("redirects").get(0).getAsJsonObject().getAsJsonPrimitive("from").getAsString();
         }
 
@@ -43,13 +43,13 @@ public class JSONStringParser {
                 TimeStamp newTimeStamp = breakDownTimeStamp(makePrettyTimestamp(time));
                 timestampNameMap.put(newTimeStamp, name);
             }
-            WebpageBuilder builder = new WebpageBuilder(title,timestampNameMap,redirectedFrom);
+            WebpageBuilder builder = new WebpageBuilder(title, timestampNameMap, redirectedFrom);
             webpage = builder.buildAWebpage();
         }
         return webpage;
     }
 
-    private static boolean youWereRedirected(JsonObject rootObject){
+    private static boolean youWereRedirected(JsonObject rootObject) {
         try {
             rootObject.getAsJsonObject("query").getAsJsonArray("redirects").get(0);
             return true;
@@ -59,18 +59,18 @@ public class JSONStringParser {
     }
 
     private static String makePrettyTimestamp(String aTimeStampString) {
-        String date = aTimeStampString.substring(0,aTimeStampString.indexOf('T'));
-        String time = aTimeStampString.substring(aTimeStampString.indexOf('T')+1,aTimeStampString.indexOf('Z'));
+        String date = aTimeStampString.substring(0, aTimeStampString.indexOf('T'));
+        String time = aTimeStampString.substring(aTimeStampString.indexOf('T') + 1, aTimeStampString.indexOf('Z'));
         return date + time;
     }
 
     private static TimeStamp breakDownTimeStamp(String aTimeString) {
-        String year = aTimeString.substring(0,4);
-        String month = aTimeString.substring(5,7);
-        String day = aTimeString.substring(8,10);
-        String hour = aTimeString.substring(10,12);
-        String minute = aTimeString.substring(13,15);
-        String second = aTimeString.substring(16,18);
+        String year = aTimeString.substring(0, 4);
+        String month = aTimeString.substring(5, 7);
+        String day = aTimeString.substring(8, 10);
+        String hour = aTimeString.substring(10, 12);
+        String minute = aTimeString.substring(13, 15);
+        String second = aTimeString.substring(16, 18);
         TimeStamp newTimeStamp = new TimeStamp(year, month, day, hour, minute, second);
         return newTimeStamp;
     }

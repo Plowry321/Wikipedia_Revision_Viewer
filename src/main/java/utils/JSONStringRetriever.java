@@ -12,7 +12,7 @@ public class JSONStringRetriever {
     }
 
     public String getJSONstring() throws IOException {
-        input = input.replaceAll(" ","%20");
+        input = input.replaceAll(" ", "%20");
         URL url = new URL("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&titles=" + input + "&rvprop=timestamp|user&rvlimit=30&redirects");
         URLConnection connection = url.openConnection();
         connection.setRequestProperty("User-Agent",
@@ -20,6 +20,20 @@ public class JSONStringRetriever {
         InputStream in = connection.getInputStream();
         Scanner scanner = new Scanner(in);
         String result = scanner.nextLine();
+        if (result.contains("\"pages\":{\"-1\"")) {
+            return "Error";
+        }
         return result;
+    }
+
+    public boolean isConnected() {
+        try {
+            URL url = new URL("http://www.wikipedia.org");
+            URLConnection connection = url.openConnection();
+            connection.connect();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

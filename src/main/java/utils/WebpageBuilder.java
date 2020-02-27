@@ -11,7 +11,7 @@ import java.util.*;
 public class WebpageBuilder {
 
     public String title;
-    public Map<TimeStamp,String> timesAndNames;
+    public Map<TimeStamp, String> timesAndNames;
     public String redirected;
     private ArrayList<String> users;
 
@@ -23,8 +23,7 @@ public class WebpageBuilder {
     private Set<String> uSet;
 
 
-    public WebpageBuilder(String aTitle, Map aTNNMap, String aRedirected)
-    {
+    public WebpageBuilder(String aTitle, Map aTNNMap, String aRedirected) {
         this.title = aTitle;
         this.timesAndNames = aTNNMap;
         this.redirected = aRedirected;
@@ -35,7 +34,7 @@ public class WebpageBuilder {
 
     }
 
-    public Webpage buildAWebpage(){
+    public Webpage buildAWebpage() {
         int[] editValues = getEditValuesFromNames(uSet);
         editsArray = orderByEdits(editValues);
         String[] timeUserArr = orderByTimeStamp(timeStampArray);
@@ -54,13 +53,13 @@ public class WebpageBuilder {
         return uniqueUserSet;
     }
 
-    private int[] getEditValuesFromNames(Set<String> uniqueUserSet){
+    private int[] getEditValuesFromNames(Set<String> uniqueUserSet) {
         Object[] uniqueUserArray = uniqueUserSet.toArray();
         int[] values = new int[uniqueUserArray.length];
-        for (int i = 0; i < uniqueUserArray.length; i++){
+        for (int i = 0; i < uniqueUserArray.length; i++) {
             int editsMade = 0;
-            for (int k = 0; k < users.size(); k++){
-                if (users.get(k).contains(uniqueUserArray[i].toString())){
+            for (int k = 0; k < users.size(); k++) {
+                if (users.get(k).contains(uniqueUserArray[i].toString())) {
                     editsMade++;
                 }
             }
@@ -71,14 +70,14 @@ public class WebpageBuilder {
 
     private String[] orderByTimeStamp(Object[] aTimeStampArray) {
         String[] stringArray = new String[aTimeStampArray.length];
-        for (int i = 0; i < aTimeStampArray.length; i++){
+        for (int i = 0; i < aTimeStampArray.length; i++) {
             TimeStamp maxTime = (TimeStamp) aTimeStampArray[i];
             TimeStamp tempTime;
 
-            for (int k = 0; k < aTimeStampArray.length; k++){
+            for (int k = 0; k < aTimeStampArray.length; k++) {
                 TimeStamp secondTime = (TimeStamp) aTimeStampArray[k];
 
-                if (maxTime.getSum() < secondTime.getSum() ){
+                if (maxTime.getSum() < secondTime.getSum()) {
                     tempTime = (TimeStamp) aTimeStampArray[i];
                     aTimeStampArray[i] = aTimeStampArray[k];
                     aTimeStampArray[k] = tempTime;
@@ -90,14 +89,14 @@ public class WebpageBuilder {
         return stringArray;
     }
 
-    private int[] orderByEdits(int[] editValueArray){
-        for (int i = 0; i < editValueArray.length; i++){
+    private int[] orderByEdits(int[] editValueArray) {
+        for (int i = 0; i < editValueArray.length; i++) {
             int maxValue = editValueArray[i];
             int tempValue;
             Object tempUser;
 
-            for (int k = 0; k < editValueArray.length; k++){
-                if (maxValue < editValueArray[k]){
+            for (int k = 0; k < editValueArray.length; k++) {
+                if (maxValue < editValueArray[k]) {
                     tempValue = editValueArray[i];
                     editValueArray[i] = editValueArray[k];
                     editValueArray[k] = tempValue;

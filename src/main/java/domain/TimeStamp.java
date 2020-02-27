@@ -9,7 +9,7 @@ public class TimeStamp {
     int minute;
     int second;
 
-    public TimeStamp(String y, String mO, String d, String h, String mI, String s){
+    public TimeStamp(String y, String mO, String d, String h, String mI, String s) {
         this.year = Integer.parseInt(y);
         this.month = Integer.parseInt(mO);
         this.day = Integer.parseInt(d);
@@ -18,9 +18,11 @@ public class TimeStamp {
         this.second = Integer.parseInt(s);
     }
 
-    public int getSum(){ return (year*365) + (month*30) + day + (hour/24) + (minute/1440) + (second/86400); }
+    public int getSum() {
+        return (year * 365) + (month * 30) + day + (hour / 24) + (minute / 1440) + (second / 86400);
+    }
 
-    public String printTimeStamp(){
+    public String printTimeStamp() {
         return String.format("%d:%d:%d, %d %d, %d", hour, minute, second, month, day, year);
     }
 }

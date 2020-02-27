@@ -18,8 +18,7 @@ public class Webpage {
     public String[] timeUserArray;
 
 
-    public Webpage(String aTitle, String aRedirectedFrom, Object[] aUserArray, int[] anEditsArray, Object[] aTimeStampArray, String[] aTimeUserArray)
-    {
+    public Webpage(String aTitle, String aRedirectedFrom, Object[] aUserArray, int[] anEditsArray, Object[] aTimeStampArray, String[] aTimeUserArray) {
         this.title = aTitle;
         this.redirectedFrom = aRedirectedFrom;
         this.redirected = !aRedirectedFrom.isEmpty();
@@ -39,7 +38,7 @@ public class Webpage {
         return redirected;
     }
 
-    public String getFirstTimestamp(){
+    public String getFirstTimestamp() {
         return timeStampArray[0].toString();
     }
 }

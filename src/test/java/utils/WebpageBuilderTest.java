@@ -16,7 +16,7 @@ class WebpageBuilderTest {
     }
 
     @Test
-    void orderByEdits(){
+    void orderByEdits() {
 
     }
 }
