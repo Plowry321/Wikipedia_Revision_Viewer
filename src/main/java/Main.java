@@ -34,7 +34,7 @@ public class Main {
                     }
                     System.out.println("Page Title: " + wb1.title);
                     if (displayChoice.equals("a")) {
-                        for (int i = 0; i < wb1.timeStampArray.length; i++) {
+                        for (int i = wb1.editValueArray.length - 1; i > 0; i--) {
                             TimeStamp timestamp = (TimeStamp) wb1.timeStampArray[i];
                             String user = wb1.timeUserArray[i];
                             System.out.println(user + " edited page on " + timestamp.printTimeStamp());
@@ -54,26 +54,6 @@ public class Main {
             System.out.println("Exception");
         } catch (NullPointerException e) {
             System.out.println("No Article Exists");
-        }
-    }
-
-    private static void printOutTheStuff(Webpage wb1, String input) {
-
-        if (wb1.redirected) {
-            System.out.println("Redirected from: " + input + " to: " + wb1.title);
-        }
-        System.out.println("Page Title: " + wb1.title);
-
-        for (int i = 0; i < wb1.timeStampArray.length; i++) {
-            TimeStamp timestamp = (TimeStamp) wb1.timeStampArray[i];
-            String user = wb1.timeUserArray[i];
-            System.out.println(user + " edited page on " + timestamp.printTimeStamp());
-        }
-
-        for (int j = 0; j < wb1.editValueArray.length; j++) {
-            String name = wb1.userArray[j].toString();
-            int edits = wb1.editValueArray[j];
-            System.out.println(name + " made " + edits + " edits");
         }
     }
 }
