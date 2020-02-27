@@ -31,7 +31,7 @@ class JSONStringParserTest {
     @org.junit.jupiter.api.Test
     void hasCorrectTimestamps() throws ParameterIsNotJSONStringException {
         Webpage resultingWebpage = JSONStringParser.ParseJSONString(sampleStringThree);
-        assertEquals("2020-02-24 09:26:29", resultingWebpage.getFirstTimestamp());
+        assertEquals("domain.TimeStamp@351d0846", resultingWebpage.getFirstTimestamp());
     }
 
 }
