@@ -2,10 +2,6 @@ package utils;
 
 import domain.TimeStamp;
 import domain.Webpage;
-
-import java.sql.Array;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.*;
 
 public class WebpageBuilder {
